@@ -10,7 +10,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [logoError, setLogoError] = useState(false);
   const {
     user,
     setUser,
@@ -33,26 +32,12 @@ const Navbar = () => {
     setUser(null);
   };
 
-  const handleLogoError = () => {
-    console.log("Logo loading error, falling back to text");
-    setLogoError(true);
-  };
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-black text-white backdrop-blur supports-[backdrop-filter]:bg-black/80">
       <div className="container flex h-16 items-center">
-        <Link to="/" className="flex items-center mr-6">
-          {!logoError ? (
-            <img 
-              src="/lovable-uploads/d6805a68-c487-4dda-8940-958e2dd60cd3.png" 
-              alt="AnalystAI" 
-              className="h-8 mr-2" 
-              onError={handleLogoError}
-            />
-          ) : (
-            <div className="font-bold text-xl">AnalystAI</div>
-          )}
-        </Link>
+        <div className="mr-6">
+          <div className="font-bold text-xl">AnalystAI</div>
+        </div>
 
         {/* Main Navigation */}
         <nav className="hidden md:flex items-center space-x-4 flex-1">
@@ -85,18 +70,9 @@ const Navbar = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="bg-black text-white pr-0">
-            <Link to="/" className="flex items-center py-4">
-              {!logoError ? (
-                <img 
-                  src="/lovable-uploads/d6805a68-c487-4dda-8940-958e2dd60cd3.png" 
-                  alt="AnalystAI" 
-                  className="h-8" 
-                  onError={handleLogoError}
-                />
-              ) : (
-                <div className="font-bold text-xl">AnalystAI</div>
-              )}
-            </Link>
+            <div className="py-4">
+              <div className="font-bold text-xl">AnalystAI</div>
+            </div>
             <nav className="grid gap-2 text-lg font-medium mt-4">
               <Link to="/" className="flex items-center gap-2 py-2 text-sm" onClick={() => setOpen(false)}>
                 Home
