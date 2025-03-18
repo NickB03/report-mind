@@ -39,12 +39,12 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-black/90 dark:border-zinc-800">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png" alt="AnalystAI" className="h-8" />
+            <img src="/logo.png" alt="AnalystAI" className="h-8" />
           </Link>
           
           {/* Desktop Navigation */}
@@ -74,7 +74,7 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
             <Link to="/" className="flex items-center py-4">
-              <img src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png" alt="AnalystAI" className="h-8" />
+              <img src="/logo.png" alt="AnalystAI" className="h-8" />
             </Link>
             <nav className="grid gap-2 text-lg font-medium mt-4">
               <Link
