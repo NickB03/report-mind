@@ -36,7 +36,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-black text-white backdrop-blur supports-[backdrop-filter]:bg-black/80">
       <div className="container flex h-16 items-center">
         <div className="mr-6">
-          <div className="font-bold text-xl">AnalystAI</div>
+          <Link to="/" className="font-bold text-xl hover:text-white/80 transition-colors">AnalystAI</Link>
         </div>
 
         {/* Main Navigation */}
@@ -71,7 +71,7 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="left" className="bg-black text-white pr-0">
             <div className="py-4">
-              <div className="font-bold text-xl">AnalystAI</div>
+              <Link to="/" className="font-bold text-xl" onClick={() => setOpen(false)}>AnalystAI</Link>
             </div>
             <nav className="grid gap-2 text-lg font-medium mt-4">
               <Link to="/" className="flex items-center gap-2 py-2 text-sm" onClick={() => setOpen(false)}>
@@ -99,7 +99,7 @@ const Navbar = () => {
         
         <div className="flex-1 md:flex-none" />
         
-        {/* User Authentication */}
+        {/* User Authentication - Fixed button visibility */}
         {isSignedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -134,7 +134,7 @@ const Navbar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button onClick={handleSignIn} variant="outline" className="gap-2">
+          <Button onClick={handleSignIn} variant="outline" className="gap-2 bg-white text-black border-white hover:bg-gray-100">
             <User className="h-4 w-4" />
             Sign In with Google
           </Button>

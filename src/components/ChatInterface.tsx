@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { SendHorizontal, User, Loader2 } from "lucide-react";
@@ -30,16 +29,31 @@ const ChatInterface = ({ reportId }: ChatInterfaceProps) => {
   const extractedData = reportId ? getExtractedData(reportId) : undefined;
   const report = reportId ? getReport(reportId) : undefined;
 
-  // Initial AI message
+  // Generate a summary of the report when component mounts
   useEffect(() => {
     if (reportId && report && !messages.length) {
-      const initialMessage = {
-        id: Date.now().toString(),
-        content: `I'm ready to help you analyze the report "${report.name}". What would you like to know about this report?`,
+      // First add loading message
+      const loadingMessage = {
+        id: "loading",
+        content: "Analyzing report...",
         sender: "ai" as const,
         timestamp: new Date(),
       };
-      setMessages([initialMessage]);
+      setMessages([loadingMessage]);
+      
+      // Simulate API call for summary generation
+      setTimeout(() => {
+        const summaryContent = generateReportSummary(extractedData);
+        
+        const initialMessage = {
+          id: Date.now().toString(),
+          content: `📄 **Report Summary**: ${summaryContent}\n\nWhat would you like to know about "${report.name}"?`,
+          sender: "ai" as const,
+          timestamp: new Date(),
+        };
+        
+        setMessages([initialMessage]);
+      }, 1000);
     } else if (!reportId && !messages.length) {
       const initialMessage = {
         id: Date.now().toString(),
@@ -49,7 +63,45 @@ const ChatInterface = ({ reportId }: ChatInterfaceProps) => {
       };
       setMessages([initialMessage]);
     }
-  }, [reportId, report, messages.length]);
+  }, [reportId, report, messages.length, extractedData]);
+
+  // Generate a summary based on the extracted data
+  const generateReportSummary = (data?: ExtractedData): string => {
+    if (!data) return "No data available for this report.";
+    
+    // Build a summary based on available data
+    const tableCount = data.tables.length;
+    const chartCount = data.charts.length;
+    const insightCount = data.insights.length;
+    
+    let summary = `This ${data.text.length}-page report contains ${tableCount} tables and ${chartCount} charts.`;
+    
+    // Add industry if available
+    if (data.industry) {
+      summary += ` The report is about the ${data.industry} industry.`;
+    }
+    
+    // Add insights if available
+    if (insightCount > 0) {
+      summary += "\n\nKey insights:";
+      data.insights.forEach((insight, index) => {
+        if (index < 3) { // Limit to 3 insights for brevity
+          summary += `\n• ${insight.text}`;
+        }
+      });
+      
+      if (insightCount > 3) {
+        summary += `\n• Plus ${insightCount - 3} more insights...`;
+      }
+    }
+    
+    // Add report summary if available
+    if (data.summary) {
+      summary += `\n\n${data.summary}`;
+    }
+    
+    return summary;
+  };
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -137,7 +189,7 @@ const ChatInterface = ({ reportId }: ChatInterfaceProps) => {
                       : "bg-muted"
                   }`}
                 >
-                  <p className="text-sm">{message.content}</p>
+                  <p className="text-sm whitespace-pre-line">{message.content}</p>
                 </div>
                 {message.sender === "user" && (
                   <Avatar className="h-8 w-8">

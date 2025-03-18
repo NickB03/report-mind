@@ -3,23 +3,42 @@ import { useState, useEffect } from "react";
 import Layout from "@/components/Layout";
 import ChatInterface from "@/components/ChatInterface";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useReports } from "@/contexts/ReportContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Chat = () => {
   const { reports } = useReports();
   const [selectedReportId, setSelectedReportId] = useState<string>("");
+  const { toast } = useToast();
   
   // Set first processed report as default selection if available
   useEffect(() => {
     const processedReports = reports.filter(r => r.processed);
     if (processedReports.length > 0 && !selectedReportId) {
       setSelectedReportId(processedReports[0].id);
+      toast({
+        title: "Report selected",
+        description: `Analyzing ${processedReports[0].name}`,
+      });
     }
-  }, [reports, selectedReportId]);
+  }, [reports, selectedReportId, toast]);
 
   const processedReports = reports.filter(r => r.processed);
+  
+  const handleReportChange = (value: string) => {
+    setSelectedReportId(value);
+    
+    if (value) {
+      const selectedReport = reports.find(r => r.id === value);
+      if (selectedReport) {
+        toast({
+          title: "Report changed",
+          description: `Now analyzing ${selectedReport.name}`,
+        });
+      }
+    }
+  };
 
   return (
     <Layout>
@@ -38,7 +57,7 @@ const Chat = () => {
             </CardHeader>
             <CardContent>
               <div className="flex gap-4 items-center">
-                <Select value={selectedReportId} onValueChange={setSelectedReportId}>
+                <Select value={selectedReportId} onValueChange={handleReportChange}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a report" />
                   </SelectTrigger>
