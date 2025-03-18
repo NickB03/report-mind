@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 export interface ReportFile {
   id: string;
@@ -37,6 +37,14 @@ export interface ExtractedData {
   }>;
 }
 
+// Add user interface for authentication
+export interface User {
+  id: string;
+  email: string;
+  displayName: string;
+  photoURL?: string;
+}
+
 interface ReportContextType {
   reports: ReportFile[];
   addReport: (file: File) => string;
@@ -47,13 +55,85 @@ interface ReportContextType {
   setReportProcessing: (id: string, processing: boolean) => void;
   addExtractedData: (data: ExtractedData) => void;
   getExtractedData: (reportId: string) => ExtractedData | undefined;
+  // Authentication related
+  user: User | null;
+  setUser: (user: User | null) => void;
+  isSignedIn: boolean;
 }
 
 const ReportContext = createContext<ReportContextType | undefined>(undefined);
 
+const LOCAL_STORAGE_REPORTS_KEY = "analystai-reports";
+const LOCAL_STORAGE_EXTRACTED_DATA_KEY = "analystai-extracted-data";
+const LOCAL_STORAGE_USER_KEY = "analystai-user";
+
 export const ReportProvider = ({ children }: { children: ReactNode }) => {
   const [reports, setReports] = useState<ReportFile[]>([]);
   const [extractedData, setExtractedData] = useState<Record<string, ExtractedData>>({});
+  const [user, setUser] = useState<User | null>(null);
+  
+  // Load data from localStorage on initial load
+  useEffect(() => {
+    const storedUser = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    
+    // Only load reports if user is signed in
+    // or if there are reports in localStorage (for anonymous users)
+    const storedReports = localStorage.getItem(LOCAL_STORAGE_REPORTS_KEY);
+    if (storedReports) {
+      const parsedReports = JSON.parse(storedReports);
+      setReports(parsedReports.map((report: any) => ({
+        ...report,
+        uploadedAt: new Date(report.uploadedAt)
+      })));
+    }
+    
+    const storedExtractedData = localStorage.getItem(LOCAL_STORAGE_EXTRACTED_DATA_KEY);
+    if (storedExtractedData) {
+      setExtractedData(JSON.parse(storedExtractedData));
+    }
+  }, []);
+  
+  // Save reports to localStorage whenever they change
+  useEffect(() => {
+    if (reports.length > 0) {
+      localStorage.setItem(LOCAL_STORAGE_REPORTS_KEY, JSON.stringify(reports));
+    }
+  }, [reports]);
+  
+  // Save extracted data to localStorage whenever it changes
+  useEffect(() => {
+    if (Object.keys(extractedData).length > 0) {
+      localStorage.setItem(LOCAL_STORAGE_EXTRACTED_DATA_KEY, JSON.stringify(extractedData));
+    }
+  }, [extractedData]);
+  
+  // Save user to localStorage whenever it changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(LOCAL_STORAGE_USER_KEY);
+      // If user signs out, clear their reports data
+      // We don't immediately clear localStorage for anonymous users
+      // in case they're just signing in
+      if (reports.length > 0 && !localStorage.getItem(LOCAL_STORAGE_USER_KEY)) {
+        // Set a timeout to clear anonymous user data after some time
+        const clearTimeout = setTimeout(() => {
+          if (!localStorage.getItem(LOCAL_STORAGE_USER_KEY)) {
+            localStorage.removeItem(LOCAL_STORAGE_REPORTS_KEY);
+            localStorage.removeItem(LOCAL_STORAGE_EXTRACTED_DATA_KEY);
+            setReports([]);
+            setExtractedData({});
+          }
+        }, 30 * 60 * 1000); // 30 minutes
+        
+        return () => clearTimeout(clearTimeout);
+      }
+    }
+  }, [user, reports.length]);
 
   const addReport = (file: File) => {
     const newReport: ReportFile = {
@@ -124,6 +204,9 @@ export const ReportProvider = ({ children }: { children: ReactNode }) => {
         setReportProcessing,
         addExtractedData,
         getExtractedData,
+        user,
+        setUser,
+        isSignedIn: !!user,
       }}
     >
       {children}

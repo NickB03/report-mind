@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Layout from "@/components/Layout";
-import { Upload, Search, MessageCircle, Settings } from "lucide-react";
+import { Upload, Search, MessageCircle, Settings, LogIn } from "lucide-react";
 import { useReports } from "@/contexts/ReportContext";
 
 const Home = () => {
-  const { reports } = useReports();
+  const { reports, isSignedIn } = useReports();
   const processedCount = reports.filter((r) => r.processed).length;
 
   return (
@@ -15,9 +15,9 @@ const Home = () => {
       <div className="container mx-auto max-w-5xl">
         <div className="space-y-8">
           <div className="text-center space-y-4 py-8">
-            <h1 className="text-4xl font-bold">
-              <span className="text-report-600">Report</span>
-              <span className="text-report-800">Mind</span>
+            <h1 className="text-4xl font-bold flex items-center justify-center flex-wrap gap-1">
+              <span className="text-report-600">Analyst</span>
+              <span className="text-report-800">AI</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Extract insights from analyst reports with AI-powered analysis and understanding
@@ -34,12 +34,20 @@ const Home = () => {
                   <p className="text-report-700 mb-4">
                     Upload your analyst reports to extract text, charts, tables, and get AI-powered insights
                   </p>
-                  <Button asChild className="bg-report-600 hover:bg-report-700">
-                    <Link to="/extract">
-                      <Upload className="mr-2 h-4 w-4" />
-                      Upload Report
-                    </Link>
-                  </Button>
+                  <div className="flex flex-wrap gap-2">
+                    <Button asChild className="bg-report-600 hover:bg-report-700">
+                      <Link to="/extract">
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload Report
+                      </Link>
+                    </Button>
+                    {!isSignedIn && (
+                      <Button variant="outline" className="gap-2">
+                        <LogIn className="h-4 w-4" />
+                        Sign In to Save Reports
+                      </Button>
+                    )}
+                  </div>
                 </div>
                 <div className="flex-shrink-0">
                   <div className="w-32 h-32 bg-report-200 rounded-full flex items-center justify-center text-report-600">

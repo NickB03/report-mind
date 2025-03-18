@@ -7,10 +7,37 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, File, Upload, MessageCircle, Settings } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Menu, File, Upload, MessageCircle, Settings, LogOut, User } from "lucide-react";
+import { useReports } from "@/contexts/ReportContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { user, setUser, isSignedIn } = useReports();
+
+  const handleSignIn = () => {
+    // This is a placeholder for the actual Google Sign-In implementation
+    // In a real implementation, you would use the Google Sign-In API
+    console.log("Sign in with Google");
+    // Example of setting a mock user for testing
+    setUser({
+      id: "google-user-id",
+      email: "user@example.com",
+      displayName: "Test User",
+      photoURL: "https://ui-avatars.com/api/?name=Test+User",
+    });
+  };
+
+  const handleSignOut = () => {
+    setUser(null);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -67,10 +94,55 @@ const Navbar = () => {
           </SheetContent>
         </Sheet>
         <Link to="/" className="flex items-center text-lg font-semibold">
-          <span className="text-report-600">Report</span>
-          <span className="text-report-800">Mind</span>
+          <span className="text-report-600">Analyst</span>
+          <span className="text-report-800">AI</span>
         </Link>
         <div className="flex-1" />
+        
+        {/* User Authentication */}
+        {isSignedIn ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.photoURL} alt={user?.displayName} />
+                  <AvatarFallback>{user?.displayName?.charAt(0) || "U"}</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <div className="flex items-center justify-start gap-2 p-2">
+                <div className="flex flex-col space-y-1 leading-none">
+                  {user?.displayName && (
+                    <p className="font-medium">{user.displayName}</p>
+                  )}
+                  {user?.email && (
+                    <p className="w-[200px] truncate text-sm text-muted-foreground">
+                      {user.email}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/config">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button onClick={handleSignIn} variant="default" className="gap-2">
+            <User className="h-4 w-4" />
+            Sign In
+          </Button>
+        )}
       </div>
     </header>
   );

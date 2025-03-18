@@ -1,29 +1,37 @@
+
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, File, X } from "lucide-react";
+import { Upload, File, X, Drive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useReports } from "@/contexts/ReportContext";
 import { toast } from "sonner";
+import GoogleDriveSelector from "./GoogleDriveSelector";
 
 interface FileUploadProps {
   onUploadComplete?: (reportId: string) => void;
 }
 
 const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
-  const { addReport } = useReports();
+  const { addReport, isSignedIn } = useReports();
   const [files, setFiles] = useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+  const [uploadTab, setUploadTab] = useState<string>("local");
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    handleFiles(acceptedFiles);
+  }, []);
+
+  const handleFiles = (newFiles: File[]) => {
     // Filter for PDF files only
-    const pdfFiles = acceptedFiles.filter(
+    const pdfFiles = newFiles.filter(
       (file) => file.type === "application/pdf"
     );
     
-    if (pdfFiles.length !== acceptedFiles.length) {
+    if (pdfFiles.length !== newFiles.length) {
       toast.error("Only PDF files are accepted");
     }
     
@@ -59,7 +67,7 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
         });
       }, 300);
     });
-  }, [addReport, onUploadComplete]);
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -77,26 +85,50 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
     });
   };
 
+  const handleDriveFilesSelected = (driveFiles: File[]) => {
+    handleFiles(driveFiles);
+    setUploadTab("local"); // Switch back to local tab to show uploaded files
+  };
+
   return (
     <div className="space-y-4">
-      <div
-        {...getRootProps()}
-        className={cn(
-          "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
-          isDragActive
-            ? "border-report-500 bg-report-50"
-            : "border-border hover:border-report-300 hover:bg-report-50/30"
-        )}
-      >
-        <input {...getInputProps()} />
-        <div className="flex flex-col items-center justify-center gap-2">
-          <Upload className="h-10 w-10 text-report-500" />
-          <h3 className="text-lg font-semibold">Drag and drop PDF files here</h3>
-          <p className="text-sm text-muted-foreground">
-            or click to browse files
-          </p>
-        </div>
-      </div>
+      <Tabs value={uploadTab} onValueChange={setUploadTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="local" className="flex items-center gap-2">
+            <Upload className="h-4 w-4" />
+            Upload from Device
+          </TabsTrigger>
+          <TabsTrigger value="drive" className="flex items-center gap-2">
+            <Drive className="h-4 w-4" />
+            Google Drive
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="local" className="mt-4">
+          <div
+            {...getRootProps()}
+            className={cn(
+              "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+              isDragActive
+                ? "border-report-500 bg-report-50"
+                : "border-border hover:border-report-300 hover:bg-report-50/30"
+            )}
+          >
+            <input {...getInputProps()} />
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Upload className="h-10 w-10 text-report-500" />
+              <h3 className="text-lg font-semibold">Drag and drop PDF files here</h3>
+              <p className="text-sm text-muted-foreground">
+                or click to browse files
+              </p>
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="drive" className="mt-4">
+          <GoogleDriveSelector onFilesSelected={handleDriveFilesSelected} />
+        </TabsContent>
+      </Tabs>
 
       {files.length > 0 && (
         <Card className="p-4">
