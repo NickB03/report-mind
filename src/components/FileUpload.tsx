@@ -45,8 +45,10 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
           
           if (newProgress === 100) {
             clearInterval(interval);
+            // Call addReport and store the ID it returns
             const reportId = addReport(file);
-            if (onUploadComplete && reportId) {
+            // Only call onUploadComplete if it exists and we have a reportId
+            if (onUploadComplete) {
               onUploadComplete(reportId);
             }
           }
