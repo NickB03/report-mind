@@ -1,6 +1,6 @@
 
 import { toast } from "sonner";
-import { apiConfig } from "@/utils/apiConfig";
+import { API_CONFIG } from "@/utils/apiConfig";
 
 interface PdfExtractionOptions {
   extractText: boolean;
@@ -34,11 +34,11 @@ const extractPdf = async (
     formData.append('fileId', fileId);
     formData.append('options', JSON.stringify(options));
 
-    const response = await fetch(`${apiConfig.baseUrl}/api/extract-pdf`, {
+    const response = await fetch(`${API_CONFIG.baseUrl}/api/extract-pdf`, {
       method: 'POST',
       body: formData,
       headers: {
-        'Authorization': `Bearer ${apiConfig.apiKey}`
+        'Authorization': `Bearer ${API_CONFIG.apiKey}`
       }
     });
 
@@ -57,9 +57,9 @@ const extractPdf = async (
 
 const getExtractionStatus = async (extractionId: string): Promise<ExtractionResponse> => {
   try {
-    const response = await fetch(`${apiConfig.baseUrl}/api/extraction-status/${extractionId}`, {
+    const response = await fetch(`${API_CONFIG.baseUrl}/api/extraction-status/${extractionId}`, {
       headers: {
-        'Authorization': `Bearer ${apiConfig.apiKey}`
+        'Authorization': `Bearer ${API_CONFIG.apiKey}`
       }
     });
 
@@ -77,9 +77,9 @@ const getExtractionStatus = async (extractionId: string): Promise<ExtractionResp
 
 const downloadExtractedData = async (extractionId: string, format: string): Promise<Blob> => {
   try {
-    const response = await fetch(`${apiConfig.baseUrl}/api/download/${extractionId}?format=${format}`, {
+    const response = await fetch(`${API_CONFIG.baseUrl}/api/download/${extractionId}?format=${format}`, {
       headers: {
-        'Authorization': `Bearer ${apiConfig.apiKey}`
+        'Authorization': `Bearer ${API_CONFIG.apiKey}`
       }
     });
 

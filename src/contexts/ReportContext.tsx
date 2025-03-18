@@ -35,6 +35,10 @@ export interface ExtractedData {
     confidence: number;
     category: string;
   }>;
+  summary?: string;
+  industry?: string;
+  vectorized?: boolean;
+  chunks?: number;
 }
 
 // Add user interface for authentication
