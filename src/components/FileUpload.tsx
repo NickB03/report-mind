@@ -46,7 +46,7 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
           if (newProgress === 100) {
             clearInterval(interval);
             const reportId = addReport(file);
-            if (onUploadComplete) {
+            if (onUploadComplete && reportId) {
               onUploadComplete(reportId);
             }
           }

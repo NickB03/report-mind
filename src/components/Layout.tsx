@@ -1,7 +1,16 @@
 
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
-import { Sidebar } from "@/components/ui/sidebar";
+import { 
+  Sidebar, 
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarProvider
+} from "@/components/ui/sidebar";
+import { Home, Upload, FileText, MessageCircle, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,31 +18,60 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="flex">
-        <Sidebar className="hidden md:block">
-          <Sidebar.Nav>
-            <Sidebar.NavItem href="/" active icon="home">
-              Home
-            </Sidebar.NavItem>
-            <Sidebar.NavItem href="/extract" icon="upload">
-              Extract
-            </Sidebar.NavItem>
-            <Sidebar.NavItem href="/results" icon="file">
-              Results
-            </Sidebar.NavItem>
-            <Sidebar.NavItem href="/chat" icon="message-circle">
-              AI Chat
-            </Sidebar.NavItem>
-            <Sidebar.NavItem href="/config" icon="settings">
-              Configuration
-            </Sidebar.NavItem>
-          </Sidebar.Nav>
-        </Sidebar>
-        <main className="flex-1 p-4 md:p-8">{children}</main>
+    <SidebarProvider>
+      <div className="min-h-screen bg-background w-full">
+        <Navbar />
+        <div className="flex">
+          <Sidebar className="hidden md:block">
+            <SidebarContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Home" asChild isActive={window.location.pathname === "/"}>
+                    <Link to="/">
+                      <Home />
+                      <span>Home</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Extract" asChild isActive={window.location.pathname === "/extract"}>
+                    <Link to="/extract">
+                      <Upload />
+                      <span>Extract</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Results" asChild isActive={window.location.pathname.startsWith("/results")}>
+                    <Link to="/results">
+                      <FileText />
+                      <span>Results</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="AI Chat" asChild isActive={window.location.pathname === "/chat"}>
+                    <Link to="/chat">
+                      <MessageCircle />
+                      <span>AI Chat</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton tooltip="Configuration" asChild isActive={window.location.pathname === "/config"}>
+                    <Link to="/config">
+                      <Settings />
+                      <span>Configuration</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarContent>
+          </Sidebar>
+          <main className="flex-1 p-4 md:p-8">{children}</main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
