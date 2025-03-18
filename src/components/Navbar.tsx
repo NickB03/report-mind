@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Menu, File, Upload, MessageCircle, Settings, LogOut, User } from "lucide-react";
+import { Menu, LogOut, User } from "lucide-react";
 import { useReports } from "@/contexts/ReportContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const {
     user,
     setUser,
@@ -32,19 +33,25 @@ const Navbar = () => {
     setUser(null);
   };
 
+  const handleLogoError = () => {
+    console.log("Logo loading error, falling back to text");
+    setLogoError(true);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-black text-white backdrop-blur supports-[backdrop-filter]:bg-black/80">
       <div className="container flex h-16 items-center">
         <Link to="/" className="flex items-center mr-6">
-          <img 
-            src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png" 
-            alt="AnalystAI" 
-            className="h-8 mr-2" 
-            onError={(e) => {
-              console.log("Logo loading error, falling back to text");
-              e.currentTarget.style.display = 'none';
-            }}
-          />
+          {!logoError ? (
+            <img 
+              src="/lovable-uploads/d6805a68-c487-4dda-8940-958e2dd60cd3.png" 
+              alt="AnalystAI" 
+              className="h-8 mr-2" 
+              onError={handleLogoError}
+            />
+          ) : (
+            <div className="font-bold text-xl">AnalystAI</div>
+          )}
         </Link>
 
         {/* Main Navigation */}
@@ -52,18 +59,21 @@ const Navbar = () => {
           <Link to="/" className="text-sm font-medium transition-colors hover:text-white/80">
             Home
           </Link>
-          <Link to="/extract" className="text-sm font-medium transition-colors hover:text-white/80 flex items-center">
-            <File className="h-4 w-4 mr-1" />
+          <Link to="/extract" className="text-sm font-medium transition-colors hover:text-white/80">
             Files
           </Link>
-          <Link to="/chat" className="text-sm font-medium transition-colors hover:text-white/80 flex items-center">
-            <MessageCircle className="h-4 w-4 mr-1" />
+          <Link to="/chat" className="text-sm font-medium transition-colors hover:text-white/80">
             Ask AnalystAI
           </Link>
-          <Link to="/config" className="text-sm font-medium transition-colors hover:text-white/80 flex items-center">
-            <Settings className="h-4 w-4 mr-1" />
+          <Link to="/config" className="text-sm font-medium transition-colors hover:text-white/80">
             Configuration
           </Link>
+          <a href="https://www.linkedin.com/in/nickbohmer" 
+             className="text-sm font-medium transition-colors hover:text-white/80"
+             target="_blank" 
+             rel="noopener noreferrer">
+            Contact
+          </a>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -76,28 +86,37 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="left" className="bg-black text-white pr-0">
             <Link to="/" className="flex items-center py-4">
-              <img 
-                src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png" 
-                alt="AnalystAI" 
-                className="h-8" 
-              />
+              {!logoError ? (
+                <img 
+                  src="/lovable-uploads/d6805a68-c487-4dda-8940-958e2dd60cd3.png" 
+                  alt="AnalystAI" 
+                  className="h-8" 
+                  onError={handleLogoError}
+                />
+              ) : (
+                <div className="font-bold text-xl">AnalystAI</div>
+              )}
             </Link>
             <nav className="grid gap-2 text-lg font-medium mt-4">
               <Link to="/" className="flex items-center gap-2 py-2 text-sm" onClick={() => setOpen(false)}>
                 Home
               </Link>
               <Link to="/extract" className="flex items-center gap-2 py-2 text-sm" onClick={() => setOpen(false)}>
-                <File className="h-4 w-4" />
                 Files
               </Link>
               <Link to="/chat" className="flex items-center gap-2 py-2 text-sm" onClick={() => setOpen(false)}>
-                <MessageCircle className="h-4 w-4" />
                 Ask AnalystAI
               </Link>
               <Link to="/config" className="flex items-center gap-2 py-2 text-sm" onClick={() => setOpen(false)}>
-                <Settings className="h-4 w-4" />
                 Configuration
               </Link>
+              <a href="https://www.linkedin.com/in/nickbohmer" 
+                 className="flex items-center gap-2 py-2 text-sm"
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 onClick={() => setOpen(false)}>
+                Contact
+              </a>
             </nav>
           </SheetContent>
         </Sheet>
@@ -129,13 +148,11 @@ const Navbar = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/config">
-                  <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

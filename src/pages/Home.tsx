@@ -13,38 +13,38 @@ const Home = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="py-12 md:py-24 lg:py-32 bg-black text-white">
+      <section className="py-12 md:py-24 lg:py-32 bg-white text-black">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
             <div className="space-y-4">
-              <div className="inline-block text-sm font-medium px-3 py-1 bg-gray-800 text-white rounded-md">
+              <div className="inline-block text-sm font-medium px-3 py-1 bg-gray-100 text-black rounded-md">
                 AI-Powered Report Analysis
               </div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                <span className="text-white">Analyst</span>
-                <span className="text-gray-400">AI</span>
+                <span className="text-black">Analyst</span>
+                <span className="text-gray-600">AI</span>
               </h1>
-              <p className="max-w-[600px] text-gray-300 md:text-xl">
+              <p className="max-w-[600px] text-gray-700 md:text-xl">
                 Extract insights from analyst reports with AI-powered analysis. Make better decisions faster.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200">
+                <Button asChild size="lg" className="bg-black text-white hover:bg-gray-800">
                   <Link to="/extract">
                     <Upload className="mr-2 h-4 w-4" />
                     Extract a Report
                   </Link>
                 </Button>
                 {!isSignedIn && (
-                  <Button variant="outline" size="lg" className="text-white border-white hover:bg-gray-800">
+                  <Button variant="outline" size="lg" className="text-black border-black hover:bg-gray-100">
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 )}
               </div>
             </div>
             <div className="mx-auto lg:mx-0 p-4 lg:p-10">
-              <div className="rounded-lg overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 p-1">
+              <div className="rounded-lg overflow-hidden bg-gray-100 p-1">
                 <img
-                  src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png"
+                  src="/lovable-uploads/d6805a68-c487-4dda-8940-958e2dd60cd3.png"
                   alt="AnalystAI Logo"
                   className="rounded shadow-xl bg-white p-4"
                   width={550}
@@ -61,11 +61,11 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm">Key Features</div>
+              <div className="inline-block rounded-lg bg-gray-200 px-3 py-1 text-sm">Key Features</div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                 Powerful Analysis Tools
               </h2>
@@ -107,7 +107,7 @@ const Home = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
@@ -152,68 +152,68 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-black text-white">
+      {/* CTA Section with Processed Reports */}
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
         <div className="container px-4 md:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                 Ready to Get Started?
               </h2>
-              <p className="max-w-[600px] text-gray-300 md:text-xl">
+              <p className="max-w-[600px] text-gray-600 md:text-xl">
                 Join {processedCount > 0 ? processedCount : 'hundreds of'} analysts who are already using AnalystAI to extract insights from their reports.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-white" />
+                  <CheckCircle className="h-5 w-5 text-black" />
                   <span>AI-powered text extraction</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-white" />
+                  <CheckCircle className="h-5 w-5 text-black" />
                   <span>Chart and table detection</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-white" />
+                  <CheckCircle className="h-5 w-5 text-black" />
                   <span>Intelligent insights generation</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200">
+                <Button asChild size="lg" className="bg-black text-white hover:bg-gray-800">
                   <Link to="/extract">Get Started Now</Link>
                 </Button>
               </div>
             </div>
             {reports.length > 0 ? (
-              <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-gray-900 p-6">
+              <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200 p-6">
                 <h3 className="text-xl font-bold mb-4">Processed Reports</h3>
                 <div className="space-y-4">
                   {reports.slice(0, 3).map((report) => (
-                    <div key={report.id} className="p-4 border border-gray-700 rounded-lg flex items-center justify-between">
+                    <div key={report.id} className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
                       <div>
                         <h4 className="font-medium">{report.name}</h4>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-500">
                           {report.processed ? 'Processed' : 'Pending'}
                         </p>
                       </div>
-                      <Button asChild variant="outline" size="sm" className="border-gray-500 text-white">
+                      <Button asChild variant="outline" size="sm" className="border-gray-300 text-black">
                         <Link to={`/results/${report.id}`}>View</Link>
                       </Button>
                     </div>
                   ))}
                   {reports.length > 3 && (
-                    <Button asChild variant="link" className="w-full text-gray-300">
+                    <Button asChild variant="link" className="w-full text-black">
                       <Link to="/results">View All Reports</Link>
                     </Button>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-gray-900 p-6">
-                <h3 className="text-xl font-bold mb-4">No Reports Yet</h3>
-                <p className="text-gray-400 mb-4">
+              <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200 p-6">
+                <h3 className="text-xl font-bold mb-4">Your Reports</h3>
+                <p className="text-gray-500 mb-4">
                   You haven't processed any reports yet. Upload your first report to get started.
                 </p>
-                <Button asChild variant="outline" className="border-gray-500 text-white">
+                <Button asChild variant="outline" className="border-gray-300 text-black">
                   <Link to="/extract">Upload Your First Report</Link>
                 </Button>
               </div>
