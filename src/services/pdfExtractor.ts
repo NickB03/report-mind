@@ -38,7 +38,7 @@ const extractPdf = async (
       method: 'POST',
       body: formData,
       headers: {
-        'Authorization': `Bearer ${API_CONFIG.apiKey}`
+        'Authorization': `Bearer ${API_CONFIG.gemini.apiKey}`
       }
     });
 
@@ -59,7 +59,7 @@ const getExtractionStatus = async (extractionId: string): Promise<ExtractionResp
   try {
     const response = await fetch(`${API_CONFIG.baseUrl}/api/extraction-status/${extractionId}`, {
       headers: {
-        'Authorization': `Bearer ${API_CONFIG.apiKey}`
+        'Authorization': `Bearer ${API_CONFIG.gemini.apiKey}`
       }
     });
 
@@ -79,7 +79,7 @@ const downloadExtractedData = async (extractionId: string, format: string): Prom
   try {
     const response = await fetch(`${API_CONFIG.baseUrl}/api/download/${extractionId}?format=${format}`, {
       headers: {
-        'Authorization': `Bearer ${API_CONFIG.apiKey}`
+        'Authorization': `Bearer ${API_CONFIG.gemini.apiKey}`
       }
     });
 
