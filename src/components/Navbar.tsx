@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, File, Upload, MessageCircle, Settings, LogOut, User } from "lucide-react";
+import { Menu, File, FileText, MessageCircle, Settings, LogOut, User, Home as HomeIcon } from "lucide-react";
 import { useReports } from "@/contexts/ReportContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -24,7 +24,6 @@ const Navbar = () => {
 
   const handleSignIn = () => {
     // This is a placeholder for the actual Google Sign-In implementation
-    // In a real implementation, you would use the Google Sign-In API
     console.log("Sign in with Google");
     // Example of setting a mock user for testing
     setUser({
@@ -40,18 +39,42 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <div className="container flex h-16 items-center justify-between">
+        <div className="flex items-center gap-6">
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <img src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png" alt="AnalystAI" className="h-8" />
+          </Link>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">
+              Home
+            </Link>
+            <Link to="/results" className="text-sm font-medium transition-colors hover:text-primary">
+              Files
+            </Link>
+            <Link to="/chat" className="text-sm font-medium transition-colors hover:text-primary">
+              Ask AnalystAI
+            </Link>
+            <Link to="/config" className="text-sm font-medium transition-colors hover:text-primary">
+              Configuration
+            </Link>
+          </nav>
+        </div>
+        
+        {/* Mobile Menu */}
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="mr-2 md:hidden">
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="outline" size="icon" className="mr-2">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle Menu</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
             <Link to="/" className="flex items-center py-4">
-              <img src="/logo.png" alt="AnalystAI" className="h-8" />
+              <img src="/lovable-uploads/9874fc9d-1d1a-4db3-a201-1b077b901bb7.png" alt="AnalystAI" className="h-8" />
             </Link>
             <nav className="grid gap-2 text-lg font-medium mt-4">
               <Link
@@ -59,23 +82,16 @@ const Navbar = () => {
                 className="flex items-center gap-2 py-2 text-sm"
                 onClick={() => setOpen(false)}
               >
+                <HomeIcon className="h-4 w-4" />
                 Home
-              </Link>
-              <Link
-                to="/extract"
-                className="flex items-center gap-2 py-2 text-sm"
-                onClick={() => setOpen(false)}
-              >
-                <Upload className="h-4 w-4" />
-                Extract
               </Link>
               <Link
                 to="/results"
                 className="flex items-center gap-2 py-2 text-sm"
                 onClick={() => setOpen(false)}
               >
-                <File className="h-4 w-4" />
-                Results
+                <FileText className="h-4 w-4" />
+                Files
               </Link>
               <Link
                 to="/chat"
@@ -83,7 +99,7 @@ const Navbar = () => {
                 onClick={() => setOpen(false)}
               >
                 <MessageCircle className="h-4 w-4" />
-                AI Chat
+                Ask AnalystAI
               </Link>
               <Link
                 to="/config"
@@ -96,10 +112,6 @@ const Navbar = () => {
             </nav>
           </SheetContent>
         </Sheet>
-        <Link to="/" className="flex items-center">
-          <img src="/logo.png" alt="AnalystAI" className="h-8 mr-2" />
-        </Link>
-        <div className="flex-1" />
         
         {/* User Authentication */}
         {isSignedIn ? (
