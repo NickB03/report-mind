@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Upload, File, X } from "lucide-react";
@@ -47,7 +46,7 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
             clearInterval(interval);
             // Call addReport and store the ID it returns
             const reportId = addReport(file);
-            // Only call onUploadComplete if it exists and we have a reportId
+            // Only call onUploadComplete if it exists
             if (onUploadComplete) {
               onUploadComplete(reportId);
             }

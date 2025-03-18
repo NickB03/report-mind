@@ -39,7 +39,7 @@ export interface ExtractedData {
 
 interface ReportContextType {
   reports: ReportFile[];
-  addReport: (file: File) => void;
+  addReport: (file: File) => string;
   removeReport: (id: string) => void;
   getReport: (id: string) => ReportFile | undefined;
   extractedData: Record<string, ExtractedData>;
