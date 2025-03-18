@@ -19,16 +19,16 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-background w-full">
+      <div className="min-h-screen bg-background w-full flex flex-col">
         <Navbar />
-        <div className="flex">
+        <div className="flex flex-1">
           <Sidebar className="hidden md:block">
             <SidebarContent>
               <SidebarMenu>
                 <SidebarMenuItem>
                   <SidebarMenuButton tooltip="Home" asChild isActive={window.location.pathname === "/"}>
                     <Link to="/">
-                      <Home />
+                      <Home className="text-report-600" />
                       <span>Home</span>
                     </Link>
                   </SidebarMenuButton>
@@ -36,7 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <SidebarMenuItem>
                   <SidebarMenuButton tooltip="Extract" asChild isActive={window.location.pathname === "/extract"}>
                     <Link to="/extract">
-                      <Upload />
+                      <Upload className="text-report-600" />
                       <span>Extract</span>
                     </Link>
                   </SidebarMenuButton>
@@ -44,7 +44,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <SidebarMenuItem>
                   <SidebarMenuButton tooltip="Results" asChild isActive={window.location.pathname.startsWith("/results")}>
                     <Link to="/results">
-                      <FileText />
+                      <FileText className="text-report-600" />
                       <span>Results</span>
                     </Link>
                   </SidebarMenuButton>
@@ -52,7 +52,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <SidebarMenuItem>
                   <SidebarMenuButton tooltip="AI Chat" asChild isActive={window.location.pathname === "/chat"}>
                     <Link to="/chat">
-                      <MessageCircle />
+                      <MessageCircle className="text-report-600" />
                       <span>AI Chat</span>
                     </Link>
                   </SidebarMenuButton>
@@ -60,7 +60,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <SidebarMenuItem>
                   <SidebarMenuButton tooltip="Configuration" asChild isActive={window.location.pathname === "/config"}>
                     <Link to="/config">
-                      <Settings />
+                      <Settings className="text-report-600" />
                       <span>Configuration</span>
                     </Link>
                   </SidebarMenuButton>
@@ -68,7 +68,7 @@ const Layout = ({ children }: LayoutProps) => {
               </SidebarMenu>
             </SidebarContent>
           </Sidebar>
-          <main className="flex-1 p-4 md:p-8">{children}</main>
+          <main className="flex-1">{children}</main>
         </div>
       </div>
     </SidebarProvider>

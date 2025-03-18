@@ -1,9 +1,9 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
-import { Upload, Search, MessageCircle, Settings, LogIn } from "lucide-react";
+import { Upload, FileText, MessageCircle, ArrowRight, CheckCircle } from "lucide-react";
 import { useReports } from "@/contexts/ReportContext";
 
 const Home = () => {
@@ -12,115 +12,208 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto max-w-5xl">
-        <div className="space-y-8">
-          <div className="text-center space-y-4 py-8">
-            <h1 className="text-4xl font-bold flex items-center justify-center flex-wrap gap-1">
-              <span className="text-report-600">Analyst</span>
-              <span className="text-report-800">AI</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Extract insights from analyst reports with AI-powered analysis and understanding
-            </p>
-          </div>
-
-          <Card className="bg-gradient-to-r from-report-50 to-report-100 border-report-200">
-            <CardContent className="pt-6">
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="flex-1">
-                  <h2 className="text-2xl font-semibold text-report-900 mb-2">
-                    Start Analyzing Reports
-                  </h2>
-                  <p className="text-report-700 mb-4">
-                    Upload your analyst reports to extract text, charts, tables, and get AI-powered insights
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Button asChild className="bg-report-600 hover:bg-report-700">
-                      <Link to="/extract">
-                        <Upload className="mr-2 h-4 w-4" />
-                        Upload Report
-                      </Link>
-                    </Button>
-                    {!isSignedIn && (
-                      <Button variant="outline" className="gap-2">
-                        <LogIn className="h-4 w-4" />
-                        Sign In to Save Reports
-                      </Button>
-                    )}
-                  </div>
-                </div>
-                <div className="flex-shrink-0">
-                  <div className="w-32 h-32 bg-report-200 rounded-full flex items-center justify-center text-report-600">
-                    <Upload className="h-12 w-12" />
-                  </div>
-                </div>
+      {/* Hero Section */}
+      <section className="py-12 md:py-24 lg:py-32 bg-background">
+        <div className="container px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+            <div className="space-y-4">
+              <div className="inline-block text-sm font-medium px-3 py-1 bg-report-100 text-report-800 rounded-md">
+                AI-Powered Report Analysis
               </div>
-            </CardContent>
-          </Card>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center">
-                  <Search className="mr-2 h-5 w-5 text-report-500" />
-                  View Results
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-2 text-muted-foreground text-sm">
-                  Browse and search through your processed reports
-                </p>
-                <p className="font-medium">{processedCount} processed reports</p>
-              </CardContent>
-              <CardFooter>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/results">View Reports</Link>
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
+                <span className="text-report-600">Analyst</span>
+                <span className="text-report-800">AI</span>
+              </h1>
+              <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                Extract insights from analyst reports with AI-powered analysis. Make better decisions faster.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button asChild size="lg" className="bg-report-600 hover:bg-report-700">
+                  <Link to="/extract">
+                    <Upload className="mr-2 h-4 w-4" />
+                    Extract a Report
+                  </Link>
                 </Button>
-              </CardFooter>
+                {!isSignedIn && (
+                  <Button variant="outline" size="lg">
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+            <div className="mx-auto lg:mx-0 p-4 lg:p-10">
+              <div className="rounded-lg overflow-hidden bg-gradient-to-br from-report-500/20 to-report-600/40 p-1">
+                <img
+                  src="/logo.png"
+                  alt="AnalystAI Dashboard"
+                  className="rounded shadow-xl"
+                  width={550}
+                  height={400}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/40">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Powerful Analysis Tools
+              </h2>
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Extract text, detect charts and tables, and generate AI-powered insights from your analyst reports.
+              </p>
+            </div>
+          </div>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 lg:gap-12 mt-12">
+            <Card className="bg-background">
+              <CardContent className="p-6 space-y-4">
+                <Upload className="h-12 w-12 text-report-600" />
+                <h3 className="text-xl font-bold">PDF Extraction</h3>
+                <p className="text-muted-foreground">
+                  Upload your analyst reports and extract structured content with advanced AI analysis.
+                </p>
+              </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center">
-                  <MessageCircle className="mr-2 h-5 w-5 text-report-500" />
-                  AI Chat
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-2 text-muted-foreground text-sm">
-                  Interact with AI to get insights about your reports
+            <Card className="bg-background">
+              <CardContent className="p-6 space-y-4">
+                <FileText className="h-12 w-12 text-report-600" />
+                <h3 className="text-xl font-bold">Visual Data</h3>
+                <p className="text-muted-foreground">
+                  Automatically detect and extract charts, tables, and other visual elements from your reports.
                 </p>
-                <p className="font-medium">Ask questions about your data</p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/chat">Open Chat</Link>
-                </Button>
-              </CardFooter>
             </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center">
-                  <Settings className="mr-2 h-5 w-5 text-report-500" />
-                  Configure
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-2 text-muted-foreground text-sm">
-                  Manage vendors, patterns, and API settings
+            <Card className="bg-background">
+              <CardContent className="p-6 space-y-4">
+                <MessageCircle className="h-12 w-12 text-report-600" />
+                <h3 className="text-xl font-bold">AI Chat</h3>
+                <p className="text-muted-foreground">
+                  Ask questions about your reports and get AI-generated insights and analysis.
                 </p>
-                <p className="font-medium">Customize your experience</p>
               </CardContent>
-              <CardFooter>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/config">Configure</Link>
-                </Button>
-              </CardFooter>
             </Card>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">How It Works</div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                Simple 3-Step Process
+              </h2>
+              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                AnalystAI makes it easy to extract insights from complex analyst reports.
+              </p>
+            </div>
+          </div>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3 lg:gap-12 mt-12">
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-report-100 text-report-900">
+                <span className="text-xl font-bold">1</span>
+              </div>
+              <h3 className="text-xl font-bold">Upload</h3>
+              <p className="text-muted-foreground">
+                Upload your analyst report PDF through our secure interface.
+              </p>
+            </div>
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-report-100 text-report-900">
+                <span className="text-xl font-bold">2</span>
+              </div>
+              <h3 className="text-xl font-bold">Process</h3>
+              <p className="text-muted-foreground">
+                Our AI analyzes the document to extract text, tables, charts, and generates insights.
+              </p>
+            </div>
+            <div className="flex flex-col items-center space-y-4 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-report-100 text-report-900">
+                <span className="text-xl font-bold">3</span>
+              </div>
+              <h3 className="text-xl font-bold">Analyze</h3>
+              <p className="text-muted-foreground">
+                View results, download extractions, or chat with AI to gain deeper insights.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-report-50 to-report-100 border-y border-report-200">
+        <div className="container px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
+                Ready to Get Started?
+              </h2>
+              <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                Join {processedCount > 0 ? processedCount : 'hundreds of'} analysts who are already using AnalystAI to extract insights from their reports.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-report-600" />
+                  <span>AI-powered text extraction</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-report-600" />
+                  <span>Chart and table detection</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-report-600" />
+                  <span>Intelligent insights generation</span>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button asChild size="lg" className="bg-report-600 hover:bg-report-700">
+                  <Link to="/extract">Get Started Now</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-background p-6">
+              <h3 className="text-xl font-bold mb-4">Processed Reports</h3>
+              {reports.length > 0 ? (
+                <div className="space-y-4">
+                  {reports.slice(0, 3).map((report) => (
+                    <div key={report.id} className="p-4 border rounded-lg flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">{report.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {report.processed ? 'Processed' : 'Pending'}
+                        </p>
+                      </div>
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={`/results/${report.id}`}>View</Link>
+                      </Button>
+                    </div>
+                  ))}
+                  {reports.length > 3 && (
+                    <Button asChild variant="link" className="w-full">
+                      <Link to="/results">View All Reports</Link>
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-muted-foreground mb-4">No reports processed yet</p>
+                  <Button asChild variant="outline">
+                    <Link to="/extract">Upload Your First Report</Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 };
