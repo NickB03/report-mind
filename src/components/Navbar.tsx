@@ -41,7 +41,7 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
+      <div className="container flex h-16 items-center">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="mr-2 md:hidden">
@@ -50,7 +50,10 @@ const Navbar = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
-            <nav className="grid gap-2 text-lg font-medium">
+            <Link to="/" className="flex items-center py-4">
+              <img src="/logo.png" alt="AnalystAI" className="h-8" />
+            </Link>
+            <nav className="grid gap-2 text-lg font-medium mt-4">
               <Link
                 to="/"
                 className="flex items-center gap-2 py-2 text-sm"
@@ -93,9 +96,8 @@ const Navbar = () => {
             </nav>
           </SheetContent>
         </Sheet>
-        <Link to="/" className="flex items-center text-lg font-semibold">
-          <span className="text-report-600">Analyst</span>
-          <span className="text-report-800">AI</span>
+        <Link to="/" className="flex items-center">
+          <img src="/logo.png" alt="AnalystAI" className="h-8 mr-2" />
         </Link>
         <div className="flex-1" />
         
@@ -140,7 +142,7 @@ const Navbar = () => {
         ) : (
           <Button onClick={handleSignIn} variant="default" className="gap-2">
             <User className="h-4 w-4" />
-            Sign In
+            Sign In with Google
           </Button>
         )}
       </div>

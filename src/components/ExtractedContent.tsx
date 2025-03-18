@@ -1,12 +1,13 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Download, FileText, BarChart, Table } from "lucide-react";
+import { Download, FileText, BarChart, Table, MessageCircle, FileJson, Layers } from "lucide-react";
 import { ExtractedData } from "@/contexts/ReportContext";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface ExtractedContentProps {
   data: ExtractedData;
@@ -14,24 +15,54 @@ interface ExtractedContentProps {
 
 const ExtractedContent = ({ data }: ExtractedContentProps) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const navigate = useNavigate();
 
-  const handleDownload = () => {
-    toast.success("Download started");
+  const handleDownload = (type: string) => {
+    toast.success(`Downloading ${type}`);
     // This would actually create and download a file in a real implementation
   };
 
+  const handleAskAnalystAI = () => {
+    navigate(`/chat?reportId=${data.reportId}`);
+  };
+
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Extracted Content</h2>
-        <Button variant="outline" onClick={handleDownload}>
-          <Download className="mr-2 h-4 w-4" />
-          Download All
-        </Button>
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-2xl font-bold">Extracted Content</h2>
+          {data.industry && (
+            <p className="text-muted-foreground">Industry: {data.industry}</p>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => handleDownload("all")} className="flex items-center gap-2">
+            <Download className="h-4 w-4" />
+            Download All
+          </Button>
+          <Button 
+            onClick={handleAskAnalystAI} 
+            className="flex items-center gap-2 bg-report-600 hover:bg-report-700"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Ask AnalystAI
+          </Button>
+        </div>
       </div>
       
+      {data.summary && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Report Summary</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>{data.summary}</p>
+          </CardContent>
+        </Card>
+      )}
+      
       <Tabs defaultValue="text" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="text" className="flex items-center">
             <FileText className="mr-2 h-4 w-4" />
             Text
@@ -44,6 +75,10 @@ const ExtractedContent = ({ data }: ExtractedContentProps) => {
             <BarChart className="mr-2 h-4 w-4" />
             Charts ({data.charts.length})
           </TabsTrigger>
+          <TabsTrigger value="vectors" className="flex items-center">
+            <Layers className="mr-2 h-4 w-4" />
+            Vectors
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="text" className="mt-4">
@@ -51,27 +86,36 @@ const ExtractedContent = ({ data }: ExtractedContentProps) => {
             <CardHeader className="pb-3">
               <div className="flex justify-between items-center">
                 <CardTitle>Text Content</CardTitle>
-                <div className="flex items-center gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
-                    disabled={currentPage === 0}
-                  >
-                    Previous
-                  </Button>
-                  <span className="text-sm">
-                    Page {currentPage + 1} of {data.text.length}
-                  </span>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setCurrentPage(Math.min(data.text.length - 1, currentPage + 1))}
-                    disabled={currentPage === data.text.length - 1}
-                  >
-                    Next
-                  </Button>
-                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleDownload("text")}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Text
+                </Button>
+              </div>
+              <div className="flex justify-end items-center gap-2 mt-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+                  disabled={currentPage === 0}
+                >
+                  Previous
+                </Button>
+                <span className="text-sm">
+                  Page {currentPage + 1} of {data.text.length}
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setCurrentPage(Math.min(data.text.length - 1, currentPage + 1))}
+                  disabled={currentPage === data.text.length - 1}
+                >
+                  Next
+                </Button>
               </div>
             </CardHeader>
             <CardContent>
@@ -85,7 +129,18 @@ const ExtractedContent = ({ data }: ExtractedContentProps) => {
         <TabsContent value="tables" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Extracted Tables</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle>Extracted Tables</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleDownload("tables")}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Tables
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               {data.tables.length > 0 ? (
@@ -131,7 +186,18 @@ const ExtractedContent = ({ data }: ExtractedContentProps) => {
         <TabsContent value="charts" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Extracted Charts</CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle>Extracted Charts</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleDownload("charts")}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Charts
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               {data.charts.length > 0 ? (
@@ -155,6 +221,63 @@ const ExtractedContent = ({ data }: ExtractedContentProps) => {
                   No charts detected in this report.
                 </div>
               )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="vectors" className="mt-4">
+          <Card>
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle>Vectorized Content</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleDownload("vectors")}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Vectors
+                </Button>
+              </div>
+              <CardDescription>
+                This report has been chunked into {data.chunks || 0} segments and vectorized for AI processing.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="border rounded-md p-4 bg-muted/20">
+                  <h3 className="font-medium mb-2 flex items-center gap-2">
+                    <FileJson className="h-4 w-4" />
+                    Vector Format
+                  </h3>
+                  <div className="bg-muted/50 p-3 rounded-md font-mono text-sm overflow-x-auto">
+                    {`{
+  "chunks": [
+    {
+      "text": "Lorem ipsum dolor sit amet...",
+      "embedding": [0.023, -0.041, 0.72, ...],
+      "metadata": {
+        "source": "page_1",
+        "chunk_id": "chunk_1"
+      }
+    },
+    ...
+  ]
+}`}
+                  </div>
+                </div>
+                
+                <div className="rounded-md border p-4">
+                  <h3 className="font-medium mb-2">Vector Uses</h3>
+                  <ul className="space-y-2 list-disc pl-4">
+                    <li>Semantic search across your report library</li>
+                    <li>Efficient AI query processing with relevant context</li>
+                    <li>Integration with vector databases (Pinecone, Weaviate, etc.)</li>
+                    <li>Advanced analytics and report comparisons</li>
+                  </ul>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

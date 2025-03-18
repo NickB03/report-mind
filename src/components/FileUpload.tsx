@@ -111,7 +111,7 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
               "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
               isDragActive
                 ? "border-report-500 bg-report-50"
-                : "border-border hover:border-report-300 hover:bg-report-50/30"
+                : "border-border hover:border-report-400 hover:bg-report-50/30"
             )}
           >
             <input {...getInputProps()} />

@@ -7,12 +7,15 @@ import ProcessOptions, { ProcessOptions as ProcessOptionsType } from "@/componen
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useReports } from "@/contexts/ReportContext";
+import { Button } from "@/components/ui/button";
+import { Download, MessageCircle } from "lucide-react";
 
 const Extract = () => {
   const navigate = useNavigate();
   const { getReport, setReportProcessing, addExtractedData } = useReports();
   const [uploadedReportId, setUploadedReportId] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [processed, setProcessed] = useState(false);
 
   const handleUploadComplete = (reportId: string) => {
     setUploadedReportId(reportId);
@@ -80,20 +83,36 @@ const Extract = () => {
             category: "Customer Concerns",
           },
         ],
+        summary: "This report provides an in-depth analysis of the market landscape, highlighting key trends, competitive positioning, and future growth opportunities across the industry.",
+        industry: "Technology",
+        vectorized: true,
+        chunks: 24,
       };
 
       // Add the extracted data
       addExtractedData(mockExtractedData);
       setProcessing(false);
+      setProcessed(true);
       
       toast.success("Processing complete!");
-      navigate(`/results/${uploadedReportId}`);
     }, 5000);
+  };
+
+  const handleDownloadAll = () => {
+    toast.success("All files are being prepared for download");
+    // This would actually create and download all files in a real implementation
+    // Including vectorized data, formatted text, charts, etc.
+  };
+
+  const handleAskAnalystAI = () => {
+    if (uploadedReportId) {
+      navigate(`/chat?reportId=${uploadedReportId}`);
+    }
   };
 
   return (
     <Layout>
-      <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto max-w-4xl pt-6">
         <div className="space-y-6">
           <div>
             <h1 className="text-3xl font-bold">Extract Report Data</h1>
@@ -111,8 +130,57 @@ const Extract = () => {
             </CardContent>
           </Card>
 
-          {uploadedReportId && (
+          {uploadedReportId && !processed && (
             <ProcessOptions onProcess={processReport} isProcessing={processing} />
+          )}
+
+          {processed && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Processing Complete</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <p>Your report has been successfully processed. You can now:</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button 
+                      onClick={() => navigate(`/results/${uploadedReportId}`)} 
+                      variant="outline" 
+                      className="h-auto py-4 px-4 flex flex-col items-center justify-center text-center gap-2"
+                    >
+                      <span className="text-lg font-medium">View Results</span>
+                      <span className="text-sm text-muted-foreground">
+                        See the extracted text, charts, tables, and insights
+                      </span>
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleDownloadAll} 
+                      variant="outline" 
+                      className="h-auto py-4 px-4 flex flex-col items-center justify-center text-center gap-2"
+                    >
+                      <Download className="h-5 w-5 mb-1" />
+                      <span className="text-lg font-medium">Download All</span>
+                      <span className="text-sm text-muted-foreground">
+                        Get all files (text, charts, vectorized data)
+                      </span>
+                    </Button>
+                    
+                    <Button 
+                      onClick={handleAskAnalystAI} 
+                      className="h-auto py-4 px-4 flex flex-col items-center justify-center text-center gap-2 bg-report-600 hover:bg-report-700 col-span-1 md:col-span-2"
+                    >
+                      <MessageCircle className="h-5 w-5 mb-1" />
+                      <span className="text-lg font-medium">Ask AnalystAI</span>
+                      <span className="text-sm">
+                        Chat with AI about this report's contents and insights
+                      </span>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>
