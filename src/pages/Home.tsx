@@ -1,17 +1,16 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
 import { Upload, FileText, MessageCircle, ArrowRight, CheckCircle } from "lucide-react";
 import { useReports } from "@/contexts/ReportContext";
-
 const Home = () => {
-  const { reports, isSignedIn } = useReports();
-  const processedCount = reports.filter((r) => r.processed).length;
-
-  return (
-    <Layout>
+  const {
+    reports,
+    isSignedIn
+  } = useReports();
+  const processedCount = reports.filter(r => r.processed).length;
+  return <Layout>
       {/* Hero Section */}
       <section className="py-12 md:py-24 lg:py-32 bg-white text-black">
         <div className="container px-4 md:px-6">
@@ -34,28 +33,12 @@ const Home = () => {
                     Extract a Report
                   </Link>
                 </Button>
-                {!isSignedIn && (
-                  <Button variant="outline" size="lg" className="text-black border-black hover:bg-gray-100">
+                {!isSignedIn && <Button variant="outline" size="lg" className="text-black border-black hover:bg-gray-100">
                     Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                )}
+                  </Button>}
               </div>
             </div>
-            <div className="mx-auto lg:mx-0 p-4 lg:p-10">
-              <div className="rounded-lg overflow-hidden bg-gray-100 p-1">
-                <img
-                  src="/lovable-uploads/d6805a68-c487-4dda-8940-958e2dd60cd3.png"
-                  alt="AnalystAI Logo"
-                  className="rounded shadow-xl bg-white p-4"
-                  width={550}
-                  height={400}
-                  onError={(e) => {
-                    console.log("Image failed to load");
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
@@ -183,12 +166,10 @@ const Home = () => {
                 </Button>
               </div>
             </div>
-            {reports.length > 0 ? (
-              <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200 p-6">
+            {reports.length > 0 ? <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200 p-6">
                 <h3 className="text-xl font-bold mb-4">Processed Reports</h3>
                 <div className="space-y-4">
-                  {reports.slice(0, 3).map((report) => (
-                    <div key={report.id} className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
+                  {reports.slice(0, 3).map(report => <div key={report.id} className="p-4 border border-gray-200 rounded-lg flex items-center justify-between">
                       <div>
                         <h4 className="font-medium">{report.name}</h4>
                         <p className="text-sm text-gray-500">
@@ -198,17 +179,12 @@ const Home = () => {
                       <Button asChild variant="outline" size="sm" className="border-gray-300 text-black">
                         <Link to={`/results/${report.id}`}>View</Link>
                       </Button>
-                    </div>
-                  ))}
-                  {reports.length > 3 && (
-                    <Button asChild variant="link" className="w-full text-black">
+                    </div>)}
+                  {reports.length > 3 && <Button asChild variant="link" className="w-full text-black">
                       <Link to="/results">View All Reports</Link>
-                    </Button>
-                  )}
+                    </Button>}
                 </div>
-              </div>
-            ) : (
-              <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200 p-6">
+              </div> : <div className="mx-auto lg:mx-0 rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200 p-6">
                 <h3 className="text-xl font-bold mb-4">Your Reports</h3>
                 <p className="text-gray-500 mb-4">
                   You haven't processed any reports yet. Upload your first report to get started.
@@ -216,13 +192,10 @@ const Home = () => {
                 <Button asChild variant="outline" className="border-gray-300 text-black">
                   <Link to="/extract">Upload Your First Report</Link>
                 </Button>
-              </div>
-            )}
+              </div>}
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Home;
