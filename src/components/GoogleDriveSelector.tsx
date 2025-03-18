@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Drive, Folder, File as FileIcon, X } from "lucide-react";
+import { Check, HardDrive, Folder, File as FileIcon, X } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useReports } from "@/contexts/ReportContext";
 import { toast } from "sonner";
@@ -97,7 +97,7 @@ const GoogleDriveSelector = ({ onFilesSelected }: GoogleDriveSelectorProps) => {
             </div>
           ) : (
             <Button onClick={handleConnectToDrive} className="gap-2">
-              <Drive className="h-4 w-4" />
+              <HardDrive className="h-4 w-4" />
               Connect to Google Drive
             </Button>
           )}
@@ -111,7 +111,7 @@ const GoogleDriveSelector = ({ onFilesSelected }: GoogleDriveSelectorProps) => {
       <CardContent className="p-4">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-medium flex items-center gap-2">
-            <Drive className="h-4 w-4" />
+            <HardDrive className="h-4 w-4" />
             Google Drive Files
           </h3>
           <Button 

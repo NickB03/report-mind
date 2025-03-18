@@ -121,7 +121,7 @@ export const ReportProvider = ({ children }: { children: ReactNode }) => {
       // in case they're just signing in
       if (reports.length > 0 && !localStorage.getItem(LOCAL_STORAGE_USER_KEY)) {
         // Set a timeout to clear anonymous user data after some time
-        const clearTimeout = setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           if (!localStorage.getItem(LOCAL_STORAGE_USER_KEY)) {
             localStorage.removeItem(LOCAL_STORAGE_REPORTS_KEY);
             localStorage.removeItem(LOCAL_STORAGE_EXTRACTED_DATA_KEY);
@@ -130,12 +130,12 @@ export const ReportProvider = ({ children }: { children: ReactNode }) => {
           }
         }, 30 * 60 * 1000); // 30 minutes
         
-        return () => clearTimeout(clearTimeout);
+        return () => clearTimeout(timeoutId);
       }
     }
   }, [user, reports.length]);
 
-  const addReport = (file: File) => {
+  const addReport = (file: File): string => {
     const newReport: ReportFile = {
       id: Date.now().toString(),
       name: file.name,

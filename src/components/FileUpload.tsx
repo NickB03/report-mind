@@ -1,7 +1,7 @@
 
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, File, X, Drive } from "lucide-react";
+import { Upload, File, X, HardDrive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -99,7 +99,7 @@ const FileUpload = ({ onUploadComplete }: FileUploadProps) => {
             Upload from Device
           </TabsTrigger>
           <TabsTrigger value="drive" className="flex items-center gap-2">
-            <Drive className="h-4 w-4" />
+            <HardDrive className="h-4 w-4" />
             Google Drive
           </TabsTrigger>
         </TabsList>
